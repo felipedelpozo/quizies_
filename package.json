@@ -1,0 +1,35 @@
+{
+  "name": "@quizies/app",
+  "version": "1.0.0",
+  "author": "Quizies",
+  "license": "SEE LICENSE IN SUB-PACKAGES",
+  "private": true,
+  "scripts": {
+    "install-pkg": "yarn install --link-duplicates",
+    "build": "yarn run lerna run build",
+    "build:mobile": "yarn build --scope @quizies/mobile --include-filtered-dependencies && cd packages/mobile/ios && npx pod-install",
+    "reset": "yarn reset-modules && yarn reset-cache",
+    "reset-cache": "yarn reset-yarn && yarn reset-rn",
+    "reset-modules": "rm -rf node_modules/ packages/*/node_modules",
+    "reset-rn": "watchman watch-del-all; rm -rf $TMPDIR/metro-cache-*; rm -rf $TMPDIR/haste-map-*; rm -rf $TMPDIR/metro-symbolicate*",
+    "reset-yarn": "yarn cache clean"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged --pattern '**/*.+(ts|tsx|js|jsx|sol|java)'",
+      "pre-push": "node ./scripts/hooks/pre-push.js"
+    }
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "husky": "^7.0.1",
+    "lerna": "^4.0.0",
+    "patch-package": "^6.4.7"
+  }
+}
